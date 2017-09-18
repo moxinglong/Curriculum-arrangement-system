@@ -1,2 +1,2 @@
-# Movie-theater-ticketing-system
+# Curriculum arrangement system
 学生排课系统
