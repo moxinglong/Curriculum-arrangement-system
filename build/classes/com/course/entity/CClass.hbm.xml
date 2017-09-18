@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.course.entity" >
+	<class name="CClass" table="c_class" >
+		<id name="c_id" column="c_id" type="java.lang.Long">
+			<generator class="native"></generator>
+		</id>
+		<property name="c_name" column="c_name" type="java.lang.String"></property>
+		<property name="c_condition" column="c_condition" type="java.lang.String"></property>
+
+		  <!-- 多的一方: 不能放弃维护关系的.外键字段就在多的一方.  -->
+		<many-to-one name="skillteacher" column="c_skillteacherid" class="Teacher"></many-to-one>
+		<many-to-one name="classteacher" column="c_classteacherid" class="Teacher"></many-to-one>
+	
+		<!-- 一对多 -->
+		<set name="students" inverse="true">
+			<key column="c_classid"></key>
+			<one-to-many class="Student"/>
+		</set>
+	</class>
+</hibernate-mapping>

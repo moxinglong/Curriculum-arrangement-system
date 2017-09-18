@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.course.entity" >
+	<class name="Teacher" table="c_teacher" >
+		<id name="t_id" column="t_id" type="java.lang.Long" >
+			<generator class="native"></generator>
+		</id>
+		<property name="t_name" column="t_name" type="java.lang.String" ></property>
+		<property name="t_birth" column="t_birth" type="java.lang.String" ></property>
+		<property name="t_type" column="t_type" type="java.lang.String" ></property>
+		<property name="t_sex" column="t_sex" type="java.lang.String" ></property>
+		<property name="t_tel" column="t_tel" type="java.lang.String" ></property>
+		<property name="t_idcard" column="t_idcard" type="java.lang.String" ></property>
+		<property name="t_address" column="t_address" type="java.lang.String" ></property>
+		<property name="t_major" column="t_major" type="java.lang.String" ></property>
+		<property name="t_school" column="t_school" type="java.lang.String" ></property>
+		<property name="t_jobtime" column="t_jobtime" type="java.lang.String" ></property>
+		
+		<!-- 一对多 -->
+		<set name="skillTeacher">
+			<key column="c_skillteacherid"></key>
+			<one-to-many class="CClass"/>
+		</set>
+		<set name="classTeacher">
+			<key column="c_classteacherid"></key>
+			<one-to-many class="CClass"/>
+		</set>
+		<set name="comments">
+			<key column="c_teacherid"></key>
+			<one-to-many class="Comment"/>
+		</set>
+	</class>
+</hibernate-mapping>

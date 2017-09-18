@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.course.entity">
+	<class name="Comment" table="c_comment" >
+		<id name="c_id" column="c_id" type="java.lang.Long" >
+			<generator class="native"></generator>
+		</id>
+		<property name="c_context" column="c_context" type="java.lang.String" ></property>
+		<property name="c_time" column="c_time" type="java.lang.String" ></property>
+		
+		<!-- 多的一方: 不能放弃维护关系的.外键字段就在多的一方.  -->
+		<many-to-one name="teacher" column="c_teacherid" class="Teacher"></many-to-one>
+	</class>
+</hibernate-mapping>

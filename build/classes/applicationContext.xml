@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:aop="http://www.springframework.org/schema/aop" 
+xmlns:context="http://www.springframework.org/schema/context" 
+xmlns:tx="http://www.springframework.org/schema/tx" 
+xmlns="http://www.springframework.org/schema/beans" 
+xsi:schemaLocation="http://www.springframework.org/schema/aop 
+http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-4.2.xsd 
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd 
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd ">
+
+	<!-- 读取配置文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	
+	<!-- 配置c3p0连接池 -->
+	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" >
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}" ></property>
+		<property name="driverClass" value="${jdbc.driverClass}" ></property>
+		<property name="user" value="${jdbc.user}" ></property>
+		<property name="password" value="${jdbc.password}" ></property>
+	</bean>
+	
+	<bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" >
+		<!-- 将连接池注入到sessionFactory, hibernate会通过连接池获得连接 -->
+		<property name="dataSource" ref="dataSource" ></property>
+		<!-- 配置hibernate基本信息 -->
+		<property name="hibernateProperties">
+			<props>
+				<!--  必选配置 -->
+				<prop key="hibernate.dialect" >org.hibernate.dialect.MySQLDialect</prop>
+				
+				<!--  可选配置 -->
+				<prop key="hibernate.show_sql" >true</prop>
+				<prop key="hibernate.format_sql" >true</prop>
+				<prop key="hibernate.hbm2ddl.auto" >update</prop>
+			</props>
+		</property>
+		<!-- 引入orm元数据,指定orm元数据所在的包路径,spring会自动读取包中的所有配置 -->
+		<property name="mappingDirectoryLocations" value="classpath:com/course/entity" ></property>
+	</bean>
+	
+	<!-- 配置核心事务管理器 -->
+	<bean name="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager" >
+		<property name="sessionFactory" ref="sessionFactory" ></property>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 配置dao -->
+	<bean name="teacherDao" class="com.course.dao.impl.TeacherDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" ></property>
+	</bean>
+	<bean name="classDao" class="com.course.dao.impl.ClassDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" ></property>
+	</bean>
+	<bean name="studentDao" class="com.course.dao.impl.StudentDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" ></property>
+	</bean>
+	<bean name="commentDao" class="com.course.dao.impl.CommentDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" ></property>
+	</bean>
+	<bean name="classroomDao" class="com.course.dao.impl.ClassroomDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" ></property>
+	</bean>
+	
+	<!-- 配置service -->
+	<bean name="teacherService" class="com.course.service.impl.TeacherServiceImpl">
+		<property name="teacherDao" ref="teacherDao"></property>
+		<property name="classDao" ref="classDao"></property>
+		<property name="commentDao" ref="commentDao"></property>
+	</bean>
+	<bean name="classService" class="com.course.service.impl.ClassServiceImpl">
+		<property name="classDao" ref="classDao"></property>
+		<property name="studentDao" ref="studentDao"></property>
+		<property name="teacherDao" ref="teacherDao"></property>
+	</bean>
+	<bean name="studentService" class="com.course.service.impl.StudentServiceImpl">
+		<property name="studentDao" ref="studentDao"></property>
+	</bean>
+	<bean name="commentService" class="com.course.service.impl.CommentServiceImpl">
+		<property name="commentDao" ref="commentDao"></property>
+	</bean>
+	<bean name="classroomService" class="com.course.service.impl.ClassroomServiceImpl">
+		<property name="classroomDao" ref="classroomDao"></property>
+	</bean>	
+	
+	<!-- 配置action -->
+	<bean name="teacherAction" class="com.course.web.TeacherAction" scope="prototype">
+		<property name="teacherService" ref="teacherService"></property>
+	</bean>	
+	<bean name="classAction" class="com.course.web.ClassAction" scope="prototype">
+		<property name="classService" ref="classService"></property>
+	</bean>
+	<bean name="studentAction" class="com.course.web.StudentAction" scope="prototype">
+		<property name="studentService" ref="studentService"></property>
+	</bean>
+	<bean name="commentAction" class="com.course.web.CommentAction" scope="prototype">
+		<property name="commentService" ref="commentService"></property>
+	</bean>
+	<bean name="classroomAction" class="com.course.web.ClassroomAction" scope="prototype">
+		<property name="classroomService" ref="classroomService"></property>
+		<property name="classService" ref="classService"></property>
+	</bean>
+</beans>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.course.entity" >
+	<class name="Student" table="c_student" >
+		<id name="s_id" column="s_id" type="java.lang.Long" >
+			<generator class="native"></generator>
+		</id>
+		<property name="s_name" column="s_name" type="java.lang.String" ></property>
+		<property name="s_sex" column="s_sex" type="java.lang.String" ></property>
+		<property name="s_birth" column="s_birth" type="java.lang.String" ></property>
+		<property name="s_tel" column="s_tel" type="java.lang.String" ></property>
+		<property name="s_address" column="s_address" type="java.lang.String" ></property>
+		<property name="s_major" column="s_major" type="java.lang.String" ></property>
+		<property name="s_school" column="s_school" type="java.lang.String" ></property>
+		
+		  <!-- 多的一方: 不能放弃维护关系的.外键字段就在多的一方.  -->
+		<many-to-one name="cclass" column="c_classid" class="CClass"></many-to-one>
+	</class>
+</hibernate-mapping>

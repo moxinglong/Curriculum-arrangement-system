@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 将Action对象交给spring容器创建 
+			# struts.objectFactory = spring
+	-->
+	<constant name="struts.objectFactory" value="spring"></constant>
+	
+	<package name="course_ssh" namespace="/" extends="struts-default">
+		<action name="TeacherAction_*" class="teacherAction" method="{1}">
+			<result name="list">/jsp/team.jsp</result>
+			<result name="detail">/jsp/teacherdetail.jsp</result>
+			<result name="toList" type="redirectAction">
+				<param name="actionName">TeacherAction_list</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+		
+		<action name="ClassAction_*" class="classAction" method="{1}">
+			<result name="list">/jsp/class.jsp</result>
+			<result name="choose">/jsp/chooseclass.jsp</result>
+			<result name="detail">/jsp/classdetail.jsp</result>
+			<result name="toList" type="redirectAction">
+				<param name="actionName">ClassAction_list</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+		
+		<action name="StudentAction_*" class="studentAction" method="{1}">
+			<result name="list">/jsp/student.jsp</result>
+			<result name="toList" type="redirectAction">
+				<param name="actionName">StudentAction_list</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+		
+		<action name="CommentAction_*" class="commentAction" method="{1}">
+
+		</action>
+		
+		<!-- 排课 -->
+		<action name="ClassroomAction_*" class="classroomAction" method="{1}">
+			<result name="list">/jsp/index.jsp</result>
+			<result name="toList" type="redirectAction">
+				<param name="actionName">ClassroomAction_list</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+	</package>
+</struts>
